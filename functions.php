@@ -37,3 +37,23 @@ function bbd_get_option_data()
     $options['script_debugging'] = get_directorist_option('script_debugging', DIRECTORIST_LOAD_MIN_FILES, true);
     return $options;
 }
+
+
+/**
+ * Showing the IDs in custom fields
+ */
+
+add_filter('directorist_custom_field_meta_key_field_args', function ($args) {
+	$args['type'] = 'text';
+	return $args;
+});
+
+/**
+ * Test
+ */
+
+
+ add_filter("atbdp_listing_search_query_argument", function ($args) {
+	e_var_dump($_GET);
+	return $args;
+});
