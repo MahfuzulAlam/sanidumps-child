@@ -19,3 +19,12 @@ function get_taxonomy_id_by_slug($slug, $taxonomy)
         return 0;
     }
 }
+
+
+/**
+ * Get a Page link by Slug
+ */
+function get_page_link_by_slug($slug)
+{
+    return get_permalink(get_page_by_path($slug));
+}

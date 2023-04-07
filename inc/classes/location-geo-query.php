@@ -70,7 +70,7 @@ if (!class_exists('Sanidump_GJSGeoQuery')) {
                 if ($sql) {
                     $sql .= ' AND ';
                 }
-                $haversine = $this->haversine_term($sanidump_geo_query);
+                //$haversine = $this->haversine_term($sanidump_geo_query);
                 $new_sql = '( sanidump_geo_query_lat.meta_key = %s AND sanidump_geo_query_lng.meta_key = %s )';
                 $sql .= $wpdb->prepare($new_sql, $lat_field, $lng_field);
             }

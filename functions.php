@@ -8,6 +8,9 @@
 
 class Sanidump_Child
 {
+    /**
+     * Construct
+     */
     public function __construct()
     {
         // Dplace Child Theme Style
