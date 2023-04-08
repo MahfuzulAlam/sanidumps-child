@@ -52,6 +52,7 @@ class Sanidump_Child
         require_once get_stylesheet_directory() . '/inc/classes/location-geo-query.php';
         require_once get_stylesheet_directory() . '/inc/classes/location-import.php';
         require_once get_stylesheet_directory() . '/inc/classes/location-search.php';
+        require_once get_stylesheet_directory() . '/inc/classes/location-fields.php';
         require_once get_stylesheet_directory() . '/inc/classes/routes.php';
         require_once get_stylesheet_directory() . '/inc/classes/search-filters.php';
         require_once get_stylesheet_directory() . '/inc/classes/search-home.php';
