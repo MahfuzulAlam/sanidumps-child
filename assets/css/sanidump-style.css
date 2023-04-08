@@ -1,0 +1,7 @@
+/* Custom Style */
+.directorist-search-contents
+  .directorist-search-form-wrap
+  .directorist-search-form-action
+  .directorist-search-form-action__filter {
+  display: none !important;
+}

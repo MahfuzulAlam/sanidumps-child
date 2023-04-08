@@ -31,7 +31,6 @@ class Sanidump_Search_Result
                 }
             }
         }
-        e_var_dump($args);
         return $args;
     }
 }

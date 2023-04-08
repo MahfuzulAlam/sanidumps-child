@@ -13,7 +13,3 @@ Requires PHP:	7.0
 Tested up to:	5.8
 Tags:           two-columns, three-columns, left-sidebar, right-sidebar, custom-colors, custom-menu, featured-images, footer-widgets, full-width-template, sticky-post, theme-options, threaded-comments, translation-ready, blog
 */
-
-.directorist-search-contents .directorist-search-form-wrap .directorist-search-form-action .directorist-search-form-action__filter {
-    display: none !important;
-}

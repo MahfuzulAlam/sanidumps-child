@@ -12,6 +12,8 @@ class Sanidump_Enqueues
     public function __construct()
     {
         // Dplace Child Theme Style
+        add_action('wp_enqueue_scripts', array($this, 'sanidump_new_styles'));
+        // Dplace Child Theme Style
         add_action('wp_print_scripts', array($this, 'sanidump_bbd_inspect_scripts'));
         // Dplace child theme setup
         add_action('wp_enqueue_scripts', array($this, 'sanidump_custom_google_map_scripts'));
@@ -47,6 +49,15 @@ class Sanidump_Enqueues
         $options = [];
         $options['script_debugging'] = get_directorist_option('script_debugging', DIRECTORIST_LOAD_MIN_FILES, true);
         return $options;
+    }
+
+    /**
+     * Sanidump New Style
+     */
+    public function sanidump_new_styles()
+    {
+        // Styles
+        wp_enqueue_style('sanidump-child-css', get_stylesheet_directory_uri() . '/assets/css/sanidump-style.css',);
     }
 }
 
