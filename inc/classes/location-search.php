@@ -14,9 +14,12 @@ class Sanidump_Location_Search
         add_filter('directorist_all_listings_query_arguments', array($this, 'location_page_search_result'));
         // Custom Term Link
         add_filter('term_link', array($this, 'custom_term_link'), 20, 3);
+        // Location Page Title
+        add_filter('wpwax_theme_page_title', array($this, 'location_page_title'));
+        add_filter('wp_title', array($this, 'location_page_title'), 20, 1);
     }
 
-    function location_page_search_result($args)
+    public function location_page_search_result($args)
     {
         // global $wp_query;
         // e_var_dump($wp_query->query_vars);
@@ -81,7 +84,10 @@ class Sanidump_Location_Search
         return $args;
     }
 
-    function custom_term_link($url, $term, $taxonomy)
+    /**
+     * Custom Term Link
+     */
+    public function custom_term_link($url, $term, $taxonomy)
     {
         $directory_type_id       = get_post_meta(get_the_ID(), '_directory_type', true);
         $directory_type_slug     = '';
@@ -93,9 +99,9 @@ class Sanidump_Location_Search
 
 
         // Categories
-        if (ATBDP_CATEGORY === $taxonomy) {
-            $url = ATBDP_Permalink::atbdp_get_category_page($term);
-        }
+        // if (ATBDP_CATEGORY === $taxonomy) {
+        //     $url = ATBDP_Permalink::atbdp_get_category_page($term);
+        // }
 
         // Location
         if (ATBDP_LOCATION === $taxonomy) {
@@ -107,10 +113,45 @@ class Sanidump_Location_Search
         }
 
         // Tag
-        if (ATBDP_TAGS === $taxonomy) {
-            $url = ATBDP_Permalink::atbdp_get_tag_page($term);
-        }
+        // if (ATBDP_TAGS === $taxonomy) {
+        //     $url = ATBDP_Permalink::atbdp_get_tag_page($term);
+        // }
         return $url;
+    }
+
+    /**
+     * Location Page Title
+     */
+    public function location_page_title($title)
+    {
+        $pagename = get_query_var('pagename', '');
+
+        if ($pagename === 'rv-campground' || $pagename === 'rv-dump-station') :
+
+            $country = get_query_var('country', '');
+            $province = get_query_var('province', '');
+            $city = get_query_var('city', '');
+
+            $location_slug = '';
+            if (!empty($city)) {
+                $location_slug = $city;
+            } else if (!empty($province)) {
+                $location_slug = $province;
+            } else if (!empty($country)) {
+                $location_slug = $country;
+            }
+
+            if (!empty($location_slug)) :
+                $location = get_term_by('slug', $location_slug, ATBDP_LOCATION);
+                if ($location && !empty($location->name)) {
+                    $title = $location->name;
+                    remove_action('wp_head', '_wp_render_title_tag', 1);
+                }
+            endif;
+
+        endif;
+
+        return $title;
     }
 }
 
