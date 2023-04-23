@@ -102,7 +102,7 @@ class Sanidump_Location_Sitemap
     public function aioseo_add_sitemap_index($indexes)
     {
         $indexes[] = [
-            'loc'     => 'http://directoristgit.local/location-sitemap.xml',
+            'loc'     => home_url('location-sitemap.xml'),
             'lastmod' => aioseo()->helpers->dateTimeToIso8601('2022-09-08 12:02'),
             'count' => 10
         ];
