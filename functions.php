@@ -58,6 +58,8 @@ class Sanidump_Child
         require_once get_stylesheet_directory() . '/inc/classes/search-home.php';
         require_once get_stylesheet_directory() . '/inc/classes/search-result.php';
         require_once get_stylesheet_directory() . '/inc/classes/shortcodes.php';
+        //require_once get_stylesheet_directory() . '/inc/classes/sitemap-provider.php';
+        require_once get_stylesheet_directory() . '/inc/classes/location-sitemap.php';
     }
 }
 

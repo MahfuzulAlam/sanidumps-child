@@ -11,7 +11,7 @@ class Sanidump_Search_Filter
     public function __construct()
     {
         // Dplace Child Theme Style
-        add_action('wp_enqueue_scripts', array($this, 'dplace_child_styles'));
+        //add_action('wp_enqueue_scripts', array($this, 'dplace_child_styles'));
     }
 
     public function dplace_child_styles()

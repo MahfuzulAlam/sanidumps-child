@@ -11,12 +11,22 @@ class Sanidump_Location_Import
     public function __construct()
     {
         // Dplace Child Theme Style
-        add_action('wp_enqueue_scripts', array($this, 'dplace_child_styles'));
+        add_action('directorist_listing_imported', array($this, 'directorist_listing_imported_never_expire'));
     }
 
-    public function dplace_child_styles()
+    /**
+     * Listing Import - Set Never Expire
+     */
+    public function directorist_listing_imported_never_expire($post_id)
     {
-        //
+        // Never Expire
+        update_post_meta($post_id, '_never_expire', 1);
+        // Update Post Author
+        $arg = array(
+            'ID' => $post_id,
+            'post_author' => 1,
+        );
+        wp_update_post($arg);
     }
 }
 

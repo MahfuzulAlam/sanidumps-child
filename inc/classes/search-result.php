@@ -20,6 +20,8 @@ class Sanidump_Search_Result
 
     function search_query_modification_dir_type($args)
     {
+        //file_put_contents(dirname(__FILE__) . '/request.json', json_encode($_REQUEST));
+        // Deal with Taxonomy
         if (isset($args['meta_query']) && count($args['meta_query']) > 0) {
             foreach ($args['meta_query'] as $key => $meta_arg) {
                 if (isset($meta_arg['key']) && $meta_arg['key'] === '_dir_type') {
@@ -31,6 +33,40 @@ class Sanidump_Search_Result
                 }
             }
         }
+        // Deal with Location
+        $latitude = 0;
+        $longitude = 0;
+        if (isset($_GET['cityLat']) && !empty($_GET['cityLat'])) $latitude = $_GET['cityLat'];
+        if (isset($_REQUEST['cityLat']) && !empty($_REQUEST['cityLat'])) $latitude = $_REQUEST['cityLat'];
+        if (isset($_GET['cityLng']) && !empty($_GET['cityLng'])) $longitude = $_GET['cityLng'];
+        if (isset($_REQUEST['cityLng']) && !empty($_REQUEST['cityLng'])) $longitude = $_REQUEST['cityLng'];
+
+
+        if ($latitude && $longitude) :
+            $args['sanidump_geo_query'] = array(
+                'lat_field' => '_manual_lat',
+                'lng_field' => '_manual_lng',
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+                'distance' => 150,
+                'units' => 'miles'
+            );
+            $args['orderby'] = 'distance';
+            $args['order'] = 'ASC';
+        endif;
+
+        // Deal with tax query
+        unset($args['tax_query']);
+        unset($args['meta_query']['_address']);
+
+        // Deal with Need Post
+        if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'ajax_search_listing') {
+            unset($args['meta_query'][0]);
+            unset($args['meta_query'][1]);
+            unset($args['meta_query'][2]);
+        }
+        //e_var_dump($args);
+        //file_put_contents(dirname(__FILE__) . '/file.json', json_encode($args));
         return $args;
     }
 }

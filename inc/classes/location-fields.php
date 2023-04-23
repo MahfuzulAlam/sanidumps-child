@@ -24,6 +24,7 @@ class Sanidump_Location_Fields
         $t_id = $tag->term_id; // Get the ID of the term you're editing
         $latitude = get_term_meta($t_id, 'latitude', true);
         $longitude = get_term_meta($t_id, 'longitude', true);
+        $sitemap = get_term_meta($t_id, 'sitemap', true);
 ?>
 
         <tr class="form-field">
@@ -44,6 +45,15 @@ class Sanidump_Location_Fields
                 <span class="description"><?php _e('Location longitude point'); ?></span>
             </td>
         </tr>
+        <tr class="form-field">
+            <th scope="row" valign="top">
+                <label for="sitemap"><?php _e('Add to Sitemap'); ?></label>
+            </th>
+            <td>
+                <input type="checkbox" class="postform" name="sitemap" value="1" id="sitemap" <?php echo $sitemap ? 'checked' : ''; ?>>
+                <label for="sitemap">Enabled</label>
+            </td>
+        </tr>
 
 <?php
     }
@@ -52,11 +62,17 @@ class Sanidump_Location_Fields
     // A callback function to save our extra taxonomy field(s)
     function save_location_lat_lng_fields($term_id)
     {
+        e_var_dump($_POST['sitemap']);
         if (isset($_POST['latitude']) && !empty($_POST['latitude'])) {
             update_term_meta($term_id, 'latitude', $_POST['latitude']);
         }
         if (isset($_POST['longitude']) && !empty($_POST['longitude'])) {
             update_term_meta($term_id, 'longitude', $_POST['longitude']);
+        }
+        if (isset($_POST['sitemap']) && !empty($_POST['sitemap'])) {
+            update_term_meta($term_id, 'sitemap', $_POST['sitemap']);
+        } else {
+            update_term_meta($term_id, 'sitemap', 0);
         }
     }
 }

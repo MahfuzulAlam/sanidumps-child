@@ -25,7 +25,7 @@ $columns = floor(12 / $taxonomy->columns);
                     foreach ($locations as $location) {
                         $loc_class = $location['img'] ? '' : ' atbd_location_grid-default';
                         if (!empty($location['term']->term_id)) {
-                            $directory_type_slug = (isset($_REQUEST['directory_type']) && !empty($_REQUEST['directory_type'])) ? $_REQUEST['directory_type'] : '';
+                            $directory_type_slug = (isset($_REQUEST['directory_type']) && !empty($_REQUEST['directory_type'])) ? $_REQUEST['directory_type'] : 'rv-campground';
                             $parents = get_term_parents_list($location['term']->term_id, ATBDP_LOCATION, array('inclusive' => false, 'format' => 'slug', 'link' => false));
                             $location['permalink'] = get_page_link_by_slug($directory_type_slug) . $parents . $location['term']->slug;
                         }

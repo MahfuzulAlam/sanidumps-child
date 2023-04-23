@@ -20,6 +20,7 @@ class Sanidump_Search_Home
 
     function search_query_modification_dir_type($args)
     {
+        return $args;
     }
 }
 
