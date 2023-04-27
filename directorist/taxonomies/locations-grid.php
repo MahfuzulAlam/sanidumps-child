@@ -9,6 +9,7 @@
 use \Directorist\Helper;
 
 $columns = floor(12 / $taxonomy->columns);
+
 ?>
 <div id="directorist" class="atbd_wrapper directorist-w-100">
     <div class="<?php Helper::directorist_container_fluid(); ?>">
@@ -24,6 +25,8 @@ $columns = floor(12 / $taxonomy->columns);
                 if ($locations) {
                     foreach ($locations as $location) {
                         $loc_class = $location['img'] ? '' : ' atbd_location_grid-default';
+                        $description = get_term_meta($location['term']->term_id, '_description', true);
+                        $string = strlen($description > 200) ? substr($description, 0, 200) . '...' : $description;
                         if (!empty($location['term']->term_id)) {
                             $directory_type_slug = (isset($_REQUEST['directory_type']) && !empty($_REQUEST['directory_type'])) ? $_REQUEST['directory_type'] : 'rv-campground';
                             $parents = get_term_parents_list($location['term']->term_id, ATBDP_LOCATION, array('inclusive' => false, 'format' => 'slug', 'link' => false));
@@ -33,19 +36,13 @@ $columns = floor(12 / $taxonomy->columns);
                         <div class="<?php Helper::directorist_column($columns); ?>">
 
                             <a class="atbd_location_grid<?php echo esc_attr($loc_class); ?>" href="<?php echo esc_url($location['permalink']); ?>">
-                                <figure>
-                                    <?php if ($location['img']) { ?>
-                                        <img src="<?php echo esc_url($location['img']); ?>" title="<?php echo esc_attr($location['name']); ?>" alt="<?php echo esc_attr($location['name']); ?>">
-                                    <?php
-                                    }
-                                    ?>
-                                    <figcaption>
-                                        <h3><?php echo esc_html($location['name']); ?></h3>
-                                        <?php echo wp_kses_post($location['grid_count_html']); ?>
-                                    </figcaption>
-                                </figure>
+                                <div>
+                                    <h3><?php echo esc_html($location['name']); ?></h3>
+                                    <p>
+                                        <?php echo $string; ?>
+                                    </p>
+                                </div>
                             </a>
-
                         </div>
                     <?php
                     }

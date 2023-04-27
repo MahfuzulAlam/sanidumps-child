@@ -89,3 +89,36 @@ function sanidump_location_breadcrumb($location)
         return '';
     }
 }
+
+
+/**
+ * Get Location Slug
+ */
+
+function sanidump_get_location_slug()
+{
+    $location_slug = '';
+    $country = get_query_var('country', '');
+    $province = get_query_var('province', '');
+    $city = get_query_var('city', '');
+
+
+    if (!empty($city)) {
+        $location_slug = $city;
+    } else if (!empty($province)) {
+        $location_slug = $province;
+    } else if (!empty($country)) {
+        $location_slug = $country;
+    }
+    return $location_slug;
+}
+
+
+add_filter('atbdp_all_locations_argument', function ($args) {
+    unset($args['parent']);
+    return $args;
+});
+
+add_filter('atbdp_listing_import_limit_per_cycle', function ($limit) {
+    return 10;
+});
