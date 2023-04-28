@@ -115,7 +115,8 @@ function sanidump_get_location_slug()
 
 
 add_filter('atbdp_all_locations_argument', function ($args) {
-    unset($args['parent']);
+    $location_slug = sanidump_get_location_slug();
+    if (!empty($location_slug)) unset($args['parent']);
     return $args;
 });
 
