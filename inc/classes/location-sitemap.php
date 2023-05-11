@@ -75,14 +75,27 @@ class Sanidump_Location_Sitemap
         $xml .=  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 
         foreach ($locations as $location) {
-            $permalink = $this->generate_location_url($location, 'rv-campground');
-            $campground_url = '<url><loc>' . esc_url($permalink) . '</loc><lastmod></lastmod><changefreq><![CDATA[monthly]]></changefreq>
+
+            $directory_types = get_term_meta($location->term_id, '_directory_type', true);
+
+            if ($directory_types) {
+                $campground_id = get_taxonomy_id_by_slug('rv-campground', ATBDP_DIRECTORY_TYPE);
+                $dumstation_id = get_taxonomy_id_by_slug('rv-dump-station', ATBDP_DIRECTORY_TYPE);
+
+                if (in_array($campground_id, $directory_types)) {
+                    $permalink = $this->generate_location_url($location, 'rv-campground');
+                    $campground_url = '<url><loc>' . esc_url($permalink) . '</loc><lastmod></lastmod><changefreq><![CDATA[monthly]]></changefreq>
             <priority><![CDATA[0.3]]></priority></url>';
-            $xml .=  $campground_url . "\n";
-            $ds_permalink = $this->generate_location_url($location, 'rv-dump-station');
-            $dump_station_url = '<url><loc>' . esc_url($ds_permalink) . '</loc><lastmod></lastmod><changefreq><![CDATA[monthly]]></changefreq>
+                    $xml .=  $campground_url . "\n";
+                }
+
+                if (in_array($dumstation_id, $directory_types)) {
+                    $ds_permalink = $this->generate_location_url($location, 'rv-dump-station');
+                    $dump_station_url = '<url><loc>' . esc_url($ds_permalink) . '</loc><lastmod></lastmod><changefreq><![CDATA[monthly]]></changefreq>
             <priority><![CDATA[0.3]]></priority></url>';
-            $xml .=  $dump_station_url . "\n";
+                    $xml .=  $dump_station_url . "\n";
+                }
+            }
         }
 
         $xml .=  '</urlset>' . "\n";

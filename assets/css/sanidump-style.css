@@ -48,3 +48,14 @@
     max-width: 113px !important;
   }
 }
+
+.location-holder {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.location-holder a {
+  display: block;
+  width: 20%;
+}

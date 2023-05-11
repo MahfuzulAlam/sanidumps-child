@@ -24,7 +24,7 @@ class Sanidump_Shortcodes
         $location_slug = sanidump_get_location_slug();
 
         if (empty($location_slug)) {
-            echo do_shortcode('[directorist_all_locations view="grid" columns="1"]');
+            $this->get_locations();
         } else {
 
             $location_id = get_taxonomy_id_by_slug($location_slug, ATBDP_LOCATION);
@@ -42,11 +42,51 @@ class Sanidump_Shortcodes
                 }
                 $child_slugs = !empty($child_slugs) ? implode(',', $child_slugs) : '';
                 // Term has no children
-                echo do_shortcode('[directorist_all_locations view="grid" columns="1" slug="' . $child_slugs . '"]');
+                $this->get_locations($child_slugs, $location_id);
             }
         }
 
         return ob_get_clean();
+    }
+
+    /**
+     * Get All Location
+     */
+    public function get_locations($child_slugs = '', $location_id = 0)
+    {
+        global $post;
+        $post_slug = $post->post_name;
+        $directory_type = get_taxonomy_id_by_slug($post_slug, ATBDP_DIRECTORY_TYPE);
+
+        $args = array(
+            'taxonomy'   => ATBDP_LOCATION,
+            'hide_empty' => false,
+            'parent' => $location_id,
+        );
+
+        if ($directory_type) {
+            $args['meta_query'] = array(
+                array(
+                    'key' => '_directory_type', // replace with your meta key's name
+                    'value' => ':' . $directory_type . ';', // replace 2 with the value you want to search for
+                    'compare' => 'LIKE',
+                ),
+            );
+        }
+
+        //if (!empty($child_slugs)) unset($args['parent']);
+        //e_var_dump($args);
+        $locations = get_terms($args);
+
+        if ($locations && count($locations)) {
+            echo '<div class="location-holder">';
+            foreach ($locations as $location) {
+                $parents = get_term_parents_list($location->term_id, ATBDP_LOCATION, array('inclusive' => false, 'format' => 'slug', 'link' => false));
+                $permalink = get_page_link_by_slug($post_slug) . $parents . $location->slug;
+                echo '<a href="' . $permalink . '">' . $location->name . '</a>';
+            }
+            echo '</div>';
+        }
     }
 }
 

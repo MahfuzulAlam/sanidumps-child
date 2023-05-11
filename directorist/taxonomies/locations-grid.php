@@ -8,8 +8,22 @@
 
 use \Directorist\Helper;
 
+global $post;
+$post_slug = $post->post_name;
+
 $columns = floor(12 / $taxonomy->columns);
 
+$location_slug = sanidump_get_location_slug();
+$location_id = $location_slug ? get_taxonomy_id_by_slug($location_slug, ATBDP_LOCATION) : 0;
+
+$description = '';
+if ($location_id) {
+    if ($post_slug && $post_slug === 'rv-campground') {
+        $description = get_term_meta($location_id, 'camp_desc', true);
+    } else if ($post_slug && $post_slug === 'rv-dump-station') {
+        $description = get_term_meta($location_id, 'dump_desc', true);
+    }
+}
 ?>
 <div id="directorist" class="atbd_wrapper directorist-w-100">
     <div class="<?php Helper::directorist_container_fluid(); ?>">
@@ -20,6 +34,7 @@ $columns = floor(12 / $taxonomy->columns);
         do_action('atbdp_before_all_locations_loop', $taxonomy);
         ?>
         <div class="atbd_location_grid_wrap atbdp-no-margin">
+            <p><?php echo $description; ?></p>
             <div class="<?php Helper::directorist_row(); ?>">
                 <?php
                 if ($locations) {
@@ -28,19 +43,17 @@ $columns = floor(12 / $taxonomy->columns);
                         $description = get_term_meta($location['term']->term_id, '_description', true);
                         $string = strlen($description > 200) ? substr($description, 0, 200) . '...' : $description;
                         if (!empty($location['term']->term_id)) {
-                            $directory_type_slug = (isset($_REQUEST['directory_type']) && !empty($_REQUEST['directory_type'])) ? $_REQUEST['directory_type'] : 'rv-campground';
                             $parents = get_term_parents_list($location['term']->term_id, ATBDP_LOCATION, array('inclusive' => false, 'format' => 'slug', 'link' => false));
-                            $location['permalink'] = get_page_link_by_slug($directory_type_slug) . $parents . $location['term']->slug;
+                            $location['permalink'] = get_page_link_by_slug($post_slug) . $parents . $location['term']->slug;
                         }
                 ?>
                         <div class="<?php Helper::directorist_column($columns); ?>">
-
                             <a class="atbd_location_grid<?php echo esc_attr($loc_class); ?>" href="<?php echo esc_url($location['permalink']); ?>">
                                 <div>
                                     <h3><?php echo esc_html($location['name']); ?></h3>
-                                    <p>
+                                    <!-- <p>
                                         <?php echo $string; ?>
-                                    </p>
+                                    </p> -->
                                 </div>
                             </a>
                         </div>
