@@ -56,7 +56,7 @@ class Sanidump_Shortcodes
     {
         global $post;
         $post_slug = $post->post_name;
-        $directory_type = get_taxonomy_id_by_slug($post_slug, ATBDP_DIRECTORY_TYPE);
+        $directory_type = get_term_by('slug', $post_slug, ATBDP_DIRECTORY_TYPE);
 
         $args = array(
             'taxonomy'   => ATBDP_LOCATION,
@@ -68,7 +68,7 @@ class Sanidump_Shortcodes
             $args['meta_query'] = array(
                 array(
                     'key' => '_directory_type', // replace with your meta key's name
-                    'value' => ':' . $directory_type . ';', // replace 2 with the value you want to search for
+                    'value' => ':' . $directory_type->term_id . ';', // replace 2 with the value you want to search for
                     'compare' => 'LIKE',
                 ),
             );
@@ -77,6 +77,17 @@ class Sanidump_Shortcodes
         //if (!empty($child_slugs)) unset($args['parent']);
         //e_var_dump($args);
         $locations = get_terms($args);
+
+        echo '<div class="sd-location-archive-page"><div class="theme-container"><div class="row"><div class="col-12"><div class="main-content">';
+
+        if ($location_id) {
+            $parent_obj = get_term($location_id, ATBDP_LOCATION);
+            if ($parent_obj) {
+                echo '<h1>' . $parent_obj->name . '</h1>';
+            }
+        } else {
+            echo '<h1>' . $directory_type->name . '</h1>';
+        }
 
         if ($locations && count($locations)) {
             echo '<div class="location-holder">';
@@ -87,6 +98,8 @@ class Sanidump_Shortcodes
             }
             echo '</div>';
         }
+
+        echo '</div></div></div></div></div>';
     }
 }
 

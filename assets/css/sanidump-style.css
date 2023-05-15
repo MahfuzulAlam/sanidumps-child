@@ -49,6 +49,14 @@
   }
 }
 
+.sd-location-archive-page {
+  margin-top: 50px;
+}
+
+.sd-location-archive-page h1 {
+  margin-bottom: 50px;
+}
+
 .location-holder {
   display: flex;
   flex-direction: row;
