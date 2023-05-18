@@ -63,16 +63,17 @@ if (!class_exists('Sanidump_GJSGeoQuery')) {
                 if (!empty($sanidump_geo_query['lng_field'])) {
                     $lng_field = $sanidump_geo_query['lng_field'];
                 }
-                // $distance = 20;
-                // if (isset($sanidump_geo_query['distance'])) {
-                //     $distance = $sanidump_geo_query['distance'];
-                // }
+                $distance = 20;
+                if (isset($sanidump_geo_query['distance'])) {
+                    $distance = $sanidump_geo_query['distance'];
+                }
                 if ($sql) {
                     $sql .= ' AND ';
                 }
-                //$haversine = $this->haversine_term($sanidump_geo_query);
-                $new_sql = '( sanidump_geo_query_lat.meta_key = %s AND sanidump_geo_query_lng.meta_key = %s )';
-                $sql .= $wpdb->prepare($new_sql, $lat_field, $lng_field);
+                $haversine = $this->haversine_term($sanidump_geo_query);
+
+                $new_sql = '( sanidump_geo_query_lat.meta_key = %s AND sanidump_geo_query_lng.meta_key = %s AND ' . $haversine . ' <= %f)';
+                $sql .= $wpdb->prepare($new_sql, $lat_field, $lng_field, $distance);
             }
             return $sql;
         }

@@ -71,7 +71,7 @@ class Sanidump_Location_Search
                         'lng_field' => '_manual_lng',
                         'latitude' => $latitude,
                         'longitude' => $longitude,
-                        'distance' => 150,
+                        'distance' => SANIDUMP_DISTANCE,
                         'units' => 'miles'
                     );
                 endif;

@@ -48,7 +48,7 @@ class Sanidump_Search_Result
                 'lng_field' => '_manual_lng',
                 'latitude' => $latitude,
                 'longitude' => $longitude,
-                'distance' => 150,
+                'distance' => SANIDUMP_DISTANCE,
                 'units' => 'miles'
             );
             $args['orderby'] = 'distance';

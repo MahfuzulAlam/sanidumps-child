@@ -7,6 +7,14 @@
  */
 
 /**
+ * Constants
+ */
+
+if (!defined('SANIDUMP_DISTANCE')) {
+    define('SANIDUMP_DISTANCE', 500);
+}
+
+/**
  * Get Taxonomy ID by Slug
  */
 function get_taxonomy_id_by_slug($slug, $taxonomy)
@@ -121,5 +129,5 @@ add_filter('atbdp_all_locations_argument', function ($args) {
 });
 
 add_filter('atbdp_listing_import_limit_per_cycle', function ($limit) {
-    return 10;
+    return 5;
 });
